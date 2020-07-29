@@ -1,0 +1,16 @@
+{
+    "name": "pinnacleqi/coding-standard",
+    "license": "proprietary",
+    "type": "phpcodesniffer-standard",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.4",
+        "slevomat/coding-standard": "^6.3",
+        "squizlabs/php_codesniffer": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "PinnacleCodingStandard\\": "PinnacleCodingStandard"
+        }
+    }
+}
