@@ -37,7 +37,7 @@ class MissingTestAnnotationOnTestFunctionSniff implements Sniff
 
         $docComment = DocCommentHelper::getDocComment($phpcsFile, $stackPtr);
 
-        if ($docComment !== null && stripos($docComment, " @test\n")) {
+        if ($docComment !== null && preg_match('/\s+@test$/m', $docComment)) {
             // Found @test annotation, no need to add error.
             return;
         }
