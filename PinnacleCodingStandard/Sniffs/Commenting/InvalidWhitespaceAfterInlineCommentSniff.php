@@ -32,17 +32,29 @@ class InvalidWhitespaceAfterInlineCommentSniff implements Sniff
             return;
         }
 
-        if (substr($commentText, 0, 2) !== '//') {
+        $commentDeclaration = substr($commentText, 0, 2);
+        if ($commentDeclaration !== '//') {
             // Not an in-line comment
             return;
         }
 
-        if (!preg_match('~//\s\S+~', $commentText)) {
-            $phpcsFile->addError(
-                'Inline comments must have a single space between // and comment.',
-                $stackPtr,
-                self::NAME
-            );
+        if (preg_match('~//\s\S+~', $commentText)) {
+            // Comment matches expected format.
+            return;
         }
+
+        $shouldFix = $phpcsFile->addFixableError(
+            'Inline comments must have a single space between // and comment.',
+            $stackPtr,
+            self::NAME
+        );
+
+        if (!$shouldFix) {
+            return;
+        }
+
+        $phpcsFile->fixer->beginChangeset();
+        $phpcsFile->fixer->replaceToken($stackPtr, $commentDeclaration . ' ' . substr($commentText, 2));
+        $phpcsFile->fixer->endChangeset();
     }
 }
